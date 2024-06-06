@@ -15,6 +15,8 @@
     <contact_managers_plugin_config filename="package://snp_automate_2023/config/workcell_plugins.yaml"/>
 
     <disable_collisions link1="ee" link2="orbbec_camera_assembly" reason="Adjacent"/>
+    <disable_collisions link1="tool0" link2="orbbec_camera_assembly" reason="Adjacent"/>
+    <disable_collisions link1="link_6_t" link2="orbbec_camera_assembly" reason="Adjacent"/>
     <disable_collisions link1="tool0" link2="ee" reason="Adjacent"/>
     <disable_collisions link1="link_1_s" link2="link_6_t" reason="Never"/>
     <disable_collisions link1="link_2_l" link2="link_6_t" reason="Never"/>
