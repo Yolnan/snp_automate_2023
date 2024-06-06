@@ -171,10 +171,29 @@
     </collision>
   </link>
 
+  <link name="orbbec_camera_assembly">
+    <visual>
+      <geometry>
+        <mesh filename="package://snp_automate_2023/meshes/collision/orbbec_camera_assembly.ply"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://snp_automate_2023/meshes/collision/orbbec_camera_assembly.ply"/>
+      </geometry>
+    </collision>
+  </link>
+
   <joint name="tool0_to_ee" type="fixed">
     <parent link="tool0"/>
     <child link="ee"/>
     <origin rpy="0.0 0.0 ${radians(45)}"/>
+  </joint>
+
+  <joint name="ee_to_orbbec_camera_assembly" type="fixed">
+    <parent link="ee"/>
+    <child link="orbbec_camera_assembly"/>
+    <origin xyz="0.10795 0.0 ${0.0093+0.0017}" rpy="0.0 0.0 ${radians(-90)}"/>
   </joint>
 
   <xacro:arg name="ros_distro" default="humble"/>
@@ -186,11 +205,14 @@
   </xacro:unless>
 
   <link name="camera_color_optical_frame"/>
-  <joint name="tool0_to_camera" type="fixed">
-    <parent link="tool0"/>
+  <joint name="ee_to_camera" type="fixed">
+    <parent link="ee"/>
     <child link="camera_color_optical_frame"/>
-    <origin xyz="${camera_cal['camera_mount_to_camera_pos']['x']} ${camera_cal['camera_mount_to_camera_pos']['y']} ${camera_cal['camera_mount_to_camera_pos']['z']}"
-            rpy="${camera_cal['camera_mount_to_camera_rpy']['x']} ${camera_cal['camera_mount_to_camera_rpy']['y']} ${camera_cal['camera_mount_to_camera_rpy']['z']}" />
+    <!--Initial Guess-->
+    <origin xyz="${0.10795 + 0.0625} 0.03 ${0.0093+0.0017+0.125}" rpy="0.0 0.0 ${radians(90)}" />
+    <!--Calibrated-->
+    <!-- <origin xyz="${camera_cal['camera_mount_to_camera_pos']['x']} ${camera_cal['camera_mount_to_camera_pos']['y']} ${camera_cal['camera_mount_to_camera_pos']['z']}"
+            rpy="${camera_cal['camera_mount_to_camera_rpy']['x']} ${camera_cal['camera_mount_to_camera_rpy']['y']} ${camera_cal['camera_mount_to_camera_rpy']['z']}" /> -->
   </joint>
 
   <link name="cal_target_frame"/>

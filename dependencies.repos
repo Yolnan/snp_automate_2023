@@ -14,3 +14,7 @@
     local-name: motoros2_fjt_pt_queue_proxy
     uri: https://github.com/gavanderhoorn/motoros2_fjt_pt_queue_proxy.git
     version: 9279969b6eec46b82fd4867ebeabfe534d653b6f
+- git:
+    local-name: orbbec  
+    uri: 'https://github.com/orbbec/OrbbecSDK_ROS2.git'
+    version: v1.5.5
