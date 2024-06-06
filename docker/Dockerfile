@@ -9,7 +9,10 @@ USER root
 
 
 # Run apt update and install useful utilities like sudo
-RUN apt update -y -qq && apt install -y -qq sudo
+RUN apt update -y -qq && apt install -y -qq sudo \
+libgflags-dev \
+nlohmann-json3-dev \
+libgoogle-glog-dev 
 
 # Bind mount the source directory so as not to unnecessarily copy source code into the docker image
 ARG WORKSPACE_DIR=/opt/snp_automate_2023

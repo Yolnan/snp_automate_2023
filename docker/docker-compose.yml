@@ -1,5 +1,5 @@
 services:
-  snp_automate_2023:
+  snp_automate_2023_orbbec:
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -12,8 +12,8 @@ services:
       ROS_LOG_DIR: /tmp/.ros
       ROS_LOCALHOST_ONLY: $ROS_LOCALHOST_ONLY
       ROS_DOMAIN_ID: $ROS_DOMAIN_ID
-    container_name: snp_automate_2023
-    image: ghcr.io/ros-industrial-consortium/snp_automate_2023:humble-master
+    container_name: snp_automate_2023_orbbec
+    image: ghcr.io/ros-industrial-consortium/snp_automate_2023:humble-orbbec
     stdin_open: true
     tty: true
     network_mode: host
