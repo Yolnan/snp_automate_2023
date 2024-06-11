@@ -209,10 +209,10 @@
     <parent link="ee"/>
     <child link="camera_color_optical_frame"/>
     <!--Initial Guess-->
-    <origin xyz="${0.1143 + 0.0625} 0.03 ${0.0093-0.0127+0.125}" rpy="0.0 0.0 ${radians(90)}" />
+    <!-- <origin xyz="${0.1143 + 0.0625} 0.03 ${0.0093-0.0127+0.125}" rpy="0.0 0.0 ${radians(90)}" /> -->
     <!--Calibrated-->
-    <!-- <origin xyz="${camera_cal['camera_mount_to_camera_pos']['x']} ${camera_cal['camera_mount_to_camera_pos']['y']} ${camera_cal['camera_mount_to_camera_pos']['z']}"
-            rpy="${camera_cal['camera_mount_to_camera_rpy']['x']} ${camera_cal['camera_mount_to_camera_rpy']['y']} ${camera_cal['camera_mount_to_camera_rpy']['z']}" /> -->
+    <origin xyz="${camera_cal['camera_mount_to_camera_pos']['x']} ${camera_cal['camera_mount_to_camera_pos']['y']} ${camera_cal['camera_mount_to_camera_pos']['z']}"
+            rpy="${camera_cal['camera_mount_to_camera_rpy']['x']} ${camera_cal['camera_mount_to_camera_rpy']['y']} ${camera_cal['camera_mount_to_camera_rpy']['z']}" />
   </joint>
 
   <link name="cal_target_frame"/>
