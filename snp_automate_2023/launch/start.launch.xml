@@ -80,10 +80,17 @@
       <arg name="net_device_ip" value="192.168.125.10"/>
       <arg name="net_device_port" value="8090"/>
       <arg name="depth_registration" value="true"/>
+      <arg name="enable_point_cloud" value="true"/>
       <arg name="enable_colored_point_cloud" value="true"/>
       <arg name="color_width" value="1280"/>
       <arg name="color_height" value="960"/>
       <arg name="color_fps" value="30"/>
+      <arg name="depth_width" value="640"/>
+      <arg name="depth_height" value="576"/>
+      <arg name="depth_fps" value="30"/>
+      <arg name="ir_width" value="640"/>
+      <arg name="ir_height" value="576"/>
+      <arg name="ir_fps" value="30"/>
       <arg name="publish_tf" value="false"/>
     </include>
   </group>
