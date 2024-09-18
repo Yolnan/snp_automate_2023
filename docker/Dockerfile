@@ -10,8 +10,14 @@ USER root
 # Run apt update and install useful utilities like sudo
 RUN apt update -y -qq && apt install -y -qq sudo
 
+# Install numpy 1.26
+RUN python3 -m pip install numpy==1.26
+
 # Install pyquaternion
-RUN python3 -m pip install pyquaternion
+RUN python3 -m pip install pyquaternion --upgrade --upgrade-strategy only-if-needed 
+
+# Install open3d
+RUN python3 -m pip install open3d==0.18.0 --upgrade --upgrade-strategy only-if-needed 
 
 # Bind mount the source directory so as not to unnecessarily copy source code into the docker image
 ARG WORKSPACE_DIR=/opt/snp_automate_2023
