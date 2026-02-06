@@ -4,8 +4,8 @@ services:
       ROS_LOG_DIR: /tmp/.ros
       ROS_LOCALHOST_ONLY: $ROS_LOCALHOST_ONLY
       ROS_DOMAIN_ID: $ROS_DOMAIN_ID
-    container_name: snp_automate_2023_calibration
-    image: ghcr.io/ros-industrial-consortium/snp_automate_2023:humble-master
+    container_name: snp_ur_calibration
+    image: ghcr.io/ros-industrial-consortium/snp_ur:humble-master
     stdin_open: true
     tty: true
     privileged: true
@@ -21,20 +21,6 @@ services:
       - /etc/shadow:/etc/shadow:ro
       - /dev:/dev
     entrypoint: ./opt/calibration.entrypoint.sh
-
-  # Driver
-  micro-ros-agent:
-    environment:
-      ROS_LOG_DIR: /tmp/.ros
-      ROS_LOCALHOST_ONLY: $ROS_LOCALHOST_ONLY
-      ROS_DOMAIN_ID: $ROS_DOMAIN_ID
-    container_name: micro-ros-agent
-    image: microros/micro-ros-agent:humble
-    command: udp4 --port 8888
-    stdin_open: true
-    tty: true
-    privileged: true
-    network_mode: host
 
   # Calibration Data Collection
   calibration:
