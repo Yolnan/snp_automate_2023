@@ -1,6 +1,6 @@
 shoulder_pan_joint: 0.0
-shoulder_lift_joint: -1.57
-elbow_joint: 1.57
-wrist_1_joint: -1.57
-wrist_2_joint: 0.0
-wrist_3_joint:  2.355
+shoulder_lift_joint: -1.2473977247821253
+elbow_joint: 1.7533230781555176
+wrist_1_joint: -2.0766728560077112
+wrist_2_joint: -1.570808235798971
+wrist_3_joint:  -2.0030015150653284

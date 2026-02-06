@@ -19,15 +19,6 @@
   <xacro:arg name="script_filename" default="$(find ur_client_library)/resources/external_control.urscript"/>
   <xacro:arg name="output_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
   <xacro:arg name="input_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
-	
-  <xacro:arg name="initial_positions_file" default=""/>
-	<xacro:property name="initial_positions_file_" value="$(arg initial_positions_file)"/>
-	<xacro:if value="${initial_positions_file_ == ''}">
-	  <xacro:property name="initial_positions" value="${xacro.load_yaml('$(find ur_description)/config/initial_positions.yaml')}"/>
-	</xacro:if>
-	<xacro:if value="${initial_positions_file_ != ''}">
-	  <xacro:property name="initial_positions" value="${xacro.load_yaml('$(find snp_automate_2023)/config/initial_positions.yaml')}"/>
-	</xacro:if>
 
   <!-- Add World -->
   <material name="light_gray">
@@ -108,7 +99,7 @@
       safety_k_position="$(arg safety_k_position)"
       use_fake_hardware="$(arg use_fake_hardware)"
       fake_sensor_commands="$(arg fake_sensor_commands)"
-      initial_positions="${initial_positions}"
+      initial_positions="${xacro.load_yaml('$(find snp_automate_2023)/config/initial_positions.yaml')}"
       robot_ip="$(arg robot_ip)"
       reverse_ip="$(arg computer_ip)"
       script_filename="$(arg script_filename)"
