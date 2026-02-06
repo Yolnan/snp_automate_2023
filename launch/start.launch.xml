@@ -12,6 +12,7 @@
   <arg name="robot_description" default="$(command 'xacro $(var robot_description_file) ros_distro:=$(env ROS_DISTRO)')"/>
   <arg name="robot_description_semantic" default="$(command 'cat $(find-pkg-share snp_automate_2023)/config/workcell.srdf')"/>
   <arg name="reference_frame" default="base_link"/>
+  <arg name="controllers_file" default="$(find-pkg-share snp_automate_2023)/config/controllers.yaml"/>
   <!-- Set the default name of the follow joint trajectory action depending on whether the robot is simulated (i.e., ros2_control) or real hardware is being used -->
   <arg name="follow_joint_trajectory_action" default="joint_trajectory_position_controller/follow_joint_trajectory" if="$(var sim_robot)"/>
   <arg name="follow_joint_trajectory_action" default="joint_trajectory_controller/follow_joint_trajectory" unless="$(var sim_robot)"/>
@@ -47,7 +48,7 @@
     <!-- BT -->
     <param name="bt_files" value="[$(find-pkg-share snp_automate_2023)/config/snp_automate.xml]"/>
     <param name="bt_plugin_libs" value="[$(find-pkg-prefix snp_application)/lib/libsnp_application_bt_plugins.so]"/>
-    <param name="bt_ros_plugin_libs" value="[$(find-pkg-prefix snp_application)/lib/libsnp_application_bt_plugins.so, $(find-pkg-prefix motoros2_behavior_tree)/lib/libmotoros2_behavior_tree.so]"/>
+    <param name="bt_ros_plugin_libs" value="[$(find-pkg-prefix snp_application)/lib/libsnp_application_bt_plugins.so]"/>
     <param name="bt_timeout" value="6000"/>
     <param name="tree" value="main"/>
     <param name="freespace_tree" value="go_home_main"/>
@@ -132,34 +133,23 @@
     <arg name="scan_reduced_contact_links" value="$(var scan_reduced_contact_links)"/>
   </include>
 
-  <group unless="$(var sim_robot)">
-    <!-- Connect URDF robot base frame with robot-published base frame -->
-    <node pkg="tf2_ros" exec="static_transform_publisher" name="base_to_robot_base" args="--frame-id base --child-frame-id motoros2/world"/>
-
-    <node pkg="motoros2_fjt_pt_queue_proxy" exec="server" name="fjt_proxy">
-      <param name="max_retries" value="200"/>
-      <param name="busy_wait_time" value ="0.1"/>
-      <param name="convergence_threshold" value="0.03"/>
+  <!-- UR Robot Driver-->
+  <group if="$(var bypass_execution)">
+    <node pkg="snp_motion_execution" exec="execution_simulator" >
+      <param name="follow_joint_trajectory_action" value="$(var follow_joint_trajectory_action)"/>
     </node>
   </group>
-  <group if="$(var sim_robot)">
-    <!-- Connect flange frame to robot-published flange frame -->
-    <node pkg="tf2_ros" exec="static_transform_publisher" name="flange_to_robot_flange" args="--frame-id flange --child-frame-id motoros2/r1/flange"/>
-
-    <!-- Simulate MotoROS2 services -->
-    <node pkg="motoros2_behavior_tree" exec="motoros2_simulator.py"/>
-
-    <group if="$(var bypass_execution)">
-      <node pkg="snp_motion_execution" exec="execution_simulator" >
-        <param name="follow_joint_trajectory_action" value="$(var follow_joint_trajectory_action)"/>
-      </node>
-    </group>
-    <group unless="$(var bypass_execution)">
-      <include file="$(find-pkg-share snp_motion_execution)/launch/ros2_control.launch.py">
-        <arg name="robot_description_file" value="$(var robot_description_file)"/>
-        <arg name="controllers_file" value="$(find-pkg-share snp_automate_2023)/config/controllers.yaml"/>
-      </include>
-    </group>
+  <group unless="$(var bypass_execution)">
+    <include file="$(find-pkg-share ur_robot_driver)/launch/ur_control.launch.py">
+      <arg name="ur_type" value="$(var ur_type)"/>
+      <arg name="robot_ip" value="$(var robot_ip)"/>
+      <arg name="description_file" value="$(var robot_description_file)"/>
+      <arg name="launch_rviz" value="false"/>
+      <arg name="tf_prefix" value=""/>
+      <arg name="initial_joint_controller" value="joint_trajectory_controller"/>
+      <arg name="controllers_file" value="$(var controllers_file)"/>
+      <arg name="use_fake_hardware" value="$(var sim_robot)"/>
+    </include>
   </group>
 </launch>
 
