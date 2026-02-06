@@ -1,8 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="motoman_hc10" xmlns:xacro="http://ros.org/wiki/xacro" xmlns:tesseract="https://github.com/tesseract-robotics/tesseract" tesseract:make_convex="true">
-  <xacro:include filename="$(find motoman_hc10_support)/urdf/hc10dt_macro.xacro" />
-  <xacro:motoman_hc10dt prefix=""/>
-
+<robot name="nss_ur5" xmlns:xacro="http://ros.org/wiki/xacro" xmlns:tesseract="https://github.com/tesseract-robotics/tesseract" tesseract:make_convex="true">
   <xacro:include filename="$(find snp_automate_2023)/urdf/ros2_control.xacro"/>
   <xacro:snp_ros2_control name="snp_ros2_control" prefix=""/>
 
@@ -66,11 +63,29 @@
     <child link="table"/>
   </joint>
 
-  <joint name="table_to_base" type="fixed">
+  <!-- ur arm instantiation -->
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:arg name="ur_type" default="ur5"/>
+  <xacro:arg name="use_fake_hardware" default="true"/>
+  <xacro:arg name="fake_sensor_commands" default="true"/>
+  <xacro:ur_robot
+      name="ur5"
+      tf_prefix=""
+      parent="table"
+      joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
+      kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
+      physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
+      visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)">
+    <origin xyz="-0.61 0 0.723" rpy="0 0 0"/>
+  </xacro:ur_robot>
+
+  <!-- <joint name="table_to_base" type="fixed">
     <parent link="table"/>
     <child link="base_link"/>
     <origin xyz="-0.61 0 0.723" rpy="0 0 0"/>
-  </joint>
+  </joint> -->
 
   <!-- Add End Effector Components -->
   <xacro:property name="radius" value="${3.75 * 0.0254 / 2.0}"/>
