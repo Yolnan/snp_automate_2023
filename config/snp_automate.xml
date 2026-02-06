@@ -101,8 +101,6 @@
                                    action_name="{follow_joint_trajectory_action}"
                                    trajectory="{updated_trajectory}"/>
       <Sleep msec="1000"/>
-      <TriggerService name="Disable Robot"
-                      service_name="stop_traj_mode"/>
     </Sequence>
   </BehaviorTree>
 
@@ -285,8 +283,6 @@
                                    action_name="{follow_joint_trajectory_action}"
                                    trajectory="{departure}"/>
       <Sleep msec="1000"/>
-      <TriggerService name="Disable Robot"
-                      service_name="stop_traj_mode"/>
     </Sequence>
   </BehaviorTree>
 
@@ -490,10 +486,6 @@
                   default="tool_paths"/>
       <input_port name="tool_paths"
                   default="{tool_paths}"/>
-    </Action>
-    <Action ID="TriggerService"
-            editable="true">
-      <input_port name="service_name"/>
     </Action>
     <Action ID="UpdateTrajectoryStartState"
             editable="true">
