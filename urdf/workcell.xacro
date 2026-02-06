@@ -77,7 +77,8 @@
       physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
       visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
       use_fake_hardware="$(arg use_fake_hardware)"
-      fake_sensor_commands="$(arg fake_sensor_commands)">
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      initial_positions="${xacro.load_yaml('$(find snp_automate_2023)/config/initial_positions.yaml')}">
     <origin xyz="-0.61 0 0.723" rpy="0 0 0"/>
   </xacro:ur_robot>
 
