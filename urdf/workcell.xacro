@@ -1,7 +1,33 @@
 <?xml version="1.0" ?>
 <robot name="nss_ur5" xmlns:xacro="http://ros.org/wiki/xacro" xmlns:tesseract="https://github.com/tesseract-robotics/tesseract" tesseract:make_convex="true">
-  <xacro:include filename="$(find snp_automate_2023)/urdf/ros2_control.xacro"/>
-  <xacro:snp_ros2_control name="snp_ros2_control" prefix=""/>
+  <!--xacro args for UR Macro-->
+  <xacro:arg name="ur_type" default="ur5"/>
+  <xacro:arg name="joint_limit_params" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_params" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_params" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_params" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+		
+	<xacro:arg name="transmission_hw_interface" default=""/>
+	<xacro:arg name="safety_limits" default="false"/>
+	<xacro:arg name="safety_pos_margin" default="0.15"/>
+	<xacro:arg name="safety_k_position" default="20"/>
+	
+	<xacro:arg name="use_fake_hardware" default="true" />
+	<xacro:arg name="fake_sensor_commands" default="false" />
+	<xacro:arg name="robot_ip" default="192.168.2.100"/>
+  <xacro:arg name="computer_ip" default="0.0.0.0"/>
+  <xacro:arg name="script_filename" default="$(find ur_client_library)/resources/external_control.urscript"/>
+  <xacro:arg name="output_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
+  <xacro:arg name="input_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
+	
+  <xacro:arg name="initial_positions_file" default=""/>
+	<xacro:property name="initial_positions_file_" value="$(arg initial_positions_file)"/>
+	<xacro:if value="${initial_positions_file_ == ''}">
+	  <xacro:property name="initial_positions" value="${xacro.load_yaml('$(find ur_description)/config/initial_positions.yaml')}"/>
+	</xacro:if>
+	<xacro:if value="${initial_positions_file_ != ''}">
+	  <xacro:property name="initial_positions" value="${xacro.load_yaml('$(find snp_automate_2023)/config/initial_positions.yaml')}"/>
+	</xacro:if>
 
   <!-- Add World -->
   <material name="light_gray">
@@ -65,20 +91,29 @@
 
   <!-- ur arm instantiation -->
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
-  <xacro:arg name="ur_type" default="ur5"/>
-  <xacro:arg name="use_fake_hardware" default="true"/>
-  <xacro:arg name="fake_sensor_commands" default="true"/>
+  <xacro:arg name="ur_type" default="$(arg ur_type)"/>
+  <xacro:arg name="use_fake_hardware" default="$(arg use_fake_hardware)"/>
+  <xacro:arg name="fake_sensor_commands" default="$(fake_sensor_commands)"/>
   <xacro:ur_robot
       name="ur5"
       tf_prefix=""
       parent="table"
-      joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
-      kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
-      physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
-      visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
+      joint_limits_parameters_file="$(arg joint_limit_params)"
+      kinematics_parameters_file="$(arg kinematics_params)"
+      physical_parameters_file="$(arg physical_params)"
+      visual_parameters_file="$(arg visual_params)"
+      transmission_hw_interface="$(arg transmission_hw_interface)"
+      safety_limits="$(arg safety_limits)"
+      safety_pos_margin="$(arg safety_pos_margin)"
+      safety_k_position="$(arg safety_k_position)"
       use_fake_hardware="$(arg use_fake_hardware)"
       fake_sensor_commands="$(arg fake_sensor_commands)"
-      initial_positions="${xacro.load_yaml('$(find snp_automate_2023)/config/initial_positions.yaml')}">
+      initial_positions="${initial_positions}"
+      robot_ip="$(arg robot_ip)"
+      reverse_ip="$(arg computer_ip)"
+      script_filename="$(arg script_filename)"
+      output_recipe_filename="$(arg output_recipe_filename)"
+      input_recipe_filename="$(arg input_recipe_filename)">
     <origin xyz="-0.61 0 0.723" rpy="0 0 0"/>
   </xacro:ur_robot>
 

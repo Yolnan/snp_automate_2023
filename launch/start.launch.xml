@@ -8,12 +8,22 @@
   <arg name="verbose" default="True"/>
   <arg name="scan_disabled_contact_links" default="[table, base_link, floor]"/>
   <arg name="scan_reduced_contact_links" default="[sand_tcp]"/>
-  <arg name="robot_description_file" default="$(find-pkg-share snp_automate_2023)/urdf/workcell.xacro"/>
-  <arg name="robot_description" default="$(command 'xacro $(var robot_description_file) ros_distro:=$(env ROS_DISTRO)')"/>
-  <arg name="robot_description_semantic" default="$(command 'cat $(find-pkg-share snp_automate_2023)/config/workcell.srdf')"/>
-  <arg name="reference_frame" default="base_link"/>
   <arg name="ur_type" default="ur5"/>
   <arg name="robot_ip" default="192.168.2.100"/>
+  <arg name="computer_ip" default="192.168.1.2"/>
+  <arg name="headless_mode" default="true"/>
+  <arg name="robot_description_file" default="$(find-pkg-share snp_automate_2023)/urdf/workcell.xacro"/>
+  <arg name="robot_description" default="$(command 'xacro $(var robot_description_file) 
+    ros_distro:=$(env ROS_DISTRO) 
+    use_fake_hardware:=$(var sim_robot) 
+    fake_sensor_commands:=$(var sim_robot)
+    robot_ip:=$(var robot_ip)
+    computer_ip:=$(var computer_ip)
+    headless_mode:=$(var headless_mode)
+    ur_type:=$(var ur_type)
+    ')"/>
+  <arg name="robot_description_semantic" default="$(command 'cat $(find-pkg-share snp_automate_2023)/config/workcell.srdf')"/>
+  <arg name="reference_frame" default="base_link"/>
   <arg name="controllers_file" default="$(find-pkg-share ur_robot_driver)/config/ur_controllers.yaml"/>
   <!-- Set the default name of the follow joint trajectory action depending on whether the robot is simulated (i.e., ros2_control) or real hardware is being used -->
   <arg name="follow_joint_trajectory_action" default="joint_trajectory_controller/follow_joint_trajectory"/>
